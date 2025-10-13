@@ -29,7 +29,7 @@ public class User {
     private String profileUrl;
 
     @JsonIgnore
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;

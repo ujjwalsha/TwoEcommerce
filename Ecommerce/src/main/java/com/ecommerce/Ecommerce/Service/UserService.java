@@ -6,6 +6,7 @@ import com.ecommerce.Ecommerce.Models.UserRequest;
 import com.ecommerce.Ecommerce.Repository.UserRepo;
 import com.ecommerce.Ecommerce.Utility.JwtService;
 import com.ecommerce.Ecommerce.Utility.Role;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,37 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already registered");
         }
 
+        if(user.getUsername() == null || user.getUsername().trim().isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Username is required");
+        }
+
+        if(user.getPhone() == null || user.getPhone().trim().isEmpty() || user.getPhone().length() <10)
+        {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("phone number must be length 10");
+        }
+
+        if(user.getEmail() == null || !user.getEmail().contains("@"))
+        {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid email");
+        }
+
+        //(?=.*[A-Z])  -- somewhere ahead in the string, there must be at least one uppercase character
+
+
+        String PASSWORD_PATTERN =
+                "^(?=.*[0-9])" + "(?=.*[a-z])" + "(?=.*[A-Z])" + "(?=.*[@#$%^&+=!-])" + ".{8,}$";
+
+        if(user.getPassword() == null || !user.getPassword().matches(PASSWORD_PATTERN))
+        {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password must be at least 8 characters long and include uppercase, lowercase, number and special character");
+        }
+
+
         User temp = new User();
         temp.setUsername(user.getUsername());
         temp.setEmail(user.getEmail());
+
         temp.setPassword(user.getPassword());
         temp.setIsActive(user.getIsActive());
         temp.setProfileUrl(user.getProfileUrl());
@@ -58,6 +87,7 @@ public class UserService {
 
         String token = jwtService.generateToken(user.get());
 
+        System.out.println("token is : "+ token);
 
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
