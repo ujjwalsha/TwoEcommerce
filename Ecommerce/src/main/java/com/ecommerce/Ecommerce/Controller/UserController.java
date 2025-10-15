@@ -32,10 +32,25 @@ public class UserController {
         return passwordGenerator.generateRandomPassword(12);
     }
 
+//    @GetMapping("/me")
+//    public ResponseEntity<?> getLoggedInUser()
+//    {
+//        return userService.getLoggedInUser();
+//    }
+
     @PostMapping("/login")
     public ResponseEntity<?> LoginUser(@RequestBody UserRequest userRequest)
     {
         return userService.loginUser(userRequest);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody User user)
+    {
+        return userService.updateUser(user);
+    }
+
+
+
 
 }

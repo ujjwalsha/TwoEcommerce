@@ -91,4 +91,24 @@ public class UserService {
 
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
+
+    public ResponseEntity<?> updateUser(User user) {
+
+        if(!userRepo.existsByUsername(user.getUsername()))
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
+        }
+
+        User temp = new User();
+        temp.setUsername(user.getUsername());
+        temp.setEmail(user.getEmail());
+        temp.setPhone(user.getPhone());
+        temp.setProfileUrl(user.getProfileUrl());
+
+        userRepo.save(temp);
+
+        return ResponseEntity.status(HttpStatus.OK).body("user updated successfully !");
+    }
+
+
 }
