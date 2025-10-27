@@ -13,6 +13,7 @@ import java.util.List;
 // Used to handling web request and return view (MVC), usually rendering web pages
 // although you have to add @ResponseBody to all method for return data.
 @RestController // it is used for restfull api, Directly serialize object to JSON, where you want to retrun data not view.
+@RequestMapping("/api")
 public class CategoryController {
 
     private final CategoryService categoryService;

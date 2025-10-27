@@ -21,8 +21,6 @@ public class Order {
     private Long id;
 
     private String OrderStatus;
-
-
     private double Amount;
 
     @JsonIgnore

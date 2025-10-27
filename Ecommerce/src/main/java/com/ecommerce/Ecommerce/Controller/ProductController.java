@@ -2,6 +2,7 @@ package com.ecommerce.Ecommerce.Controller;
 
 import com.ecommerce.Ecommerce.Models.Product;
 import com.ecommerce.Ecommerce.Service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,8 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Product>> getProducts(HttpServletRequest request){
+        return new ResponseEntity<>(productService.getAllProducts(request), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/product/{id}")
@@ -59,9 +60,10 @@ public class ProductController {
         return productService.addProduct(product, categoryId);
     }
 
-
-
-
-
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProduct(@RequestParam String q)
+    {
+        return productService.searchProduct(q);
+    }
 
 }

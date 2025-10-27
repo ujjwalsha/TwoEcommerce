@@ -6,12 +6,13 @@ import com.ecommerce.Ecommerce.Models.UserRequest;
 import com.ecommerce.Ecommerce.Repository.UserRepo;
 import com.ecommerce.Ecommerce.Utility.JwtService;
 import com.ecommerce.Ecommerce.Utility.Role;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -20,6 +21,7 @@ public class UserService {
     private final UserRepo userRepo;
     private final JwtService jwtService;
 
+    @Autowired
     public UserService(UserRepo userRepo, JwtService jwtService)
     {
         this.userRepo = userRepo;
@@ -28,6 +30,8 @@ public class UserService {
 
 
     public ResponseEntity<?> registerUser(User user) {
+
+        System.out.println(user);
 
         if(userRepo.existsByEmail(user.getEmail())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already registered");
@@ -38,8 +42,9 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Username is required");
         }
 
-        if(user.getPhone() == null || user.getPhone().trim().isEmpty() || user.getPhone().length() <10)
+        if(user.getPhone() == null || user.getPhone().trim().isEmpty() || user.getPhone().length() < 10)
         {
+            System.out.println("length is : "+ user.getPhone());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("phone number must be length 10");
         }
 
@@ -84,12 +89,20 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found!");
         }
 
-
         String token = jwtService.generateToken(user.get());
-
         System.out.println("token is : "+ token);
 
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        //send jwt to cookies
+        ResponseCookie cookie = ResponseCookie.from("jwt",token)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(24*60*60)
+                .build();
+
+        String username = jwtService.extractUsername(token);
+
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(Map.of("message" , "Login successful"));
     }
 
     public ResponseEntity<?> updateUser(User user) {
@@ -111,4 +124,20 @@ public class UserService {
     }
 
 
+    public ResponseEntity<?> getLoggedInUser(HttpServletRequest request) {
+
+        System.out.println(request.getAttribute("username"));
+        System.out.println(request.getRequestURL());
+
+        String username = (String)request.getAttribute("username");
+
+        if(username == null)
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message" , "Unauthorized"));
+        }
+
+        User user = userRepo.findByUsername(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 }

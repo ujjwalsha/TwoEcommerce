@@ -6,6 +6,7 @@ import com.ecommerce.Ecommerce.Models.Category;
 import com.ecommerce.Ecommerce.Models.Product;
 import com.ecommerce.Ecommerce.Repository.CategoryRepo;
 import com.ecommerce.Ecommerce.Repository.ProductRepo;
+import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.persister.collection.mutation.UpdateRowsCoordinatorTablePerSubclass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,8 @@ public class ProductService {
     }
 
 
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(HttpServletRequest request) {
+        System.out.println("username is : " + request.getAttribute("username"));
         return productRepo.findAll();
     }
 
@@ -72,4 +74,9 @@ public class ProductService {
     }
 
 
+    public ResponseEntity<?> searchProduct(String q) {
+        List<Product> existProducts = productRepo.findByNameContainingIgnoreCase(q);
+
+        return ResponseEntity.status(HttpStatus.OK).body(existProducts);
+    }
 }

@@ -2,6 +2,7 @@ package com.ecommerce.Ecommerce.Utility;
 
 
 import com.ecommerce.Ecommerce.Models.User;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +29,6 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
-
-
     //Jwts.builder() -- this is static method initializes the jwt builder
     //.setSubject() -- this method set the subject claim of the jwt, such their email and username.
     //setIssuedAt(user.getEmail()) -- issue date
@@ -37,4 +36,29 @@ public class JwtService {
     //setExpiration() -- it uses the current time 86400000 millisecond(which equals to 24 hours)
     //signWith(SignatureAlgorithm.ES256, SECRET_KEY) -- signing algorithm, key size 256 bits)
     //compact() -- this method generate the final JWT string, after all builder, claim, signature, headers.
+
+    public String extractUsername(String token)
+    {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token)
+    {
+        try
+        {
+            Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+            return true;
+        }catch (JwtException e)
+        {
+            return false;
+        }
+
+    }
+
+
 }

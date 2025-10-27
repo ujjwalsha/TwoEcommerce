@@ -40,7 +40,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
-
     /**
      * JsonIgnore is an annotation from jackson(a popular json library in java).
      * it is used to tell jackson not to include a particular field or method when serializing or deserializing JSON

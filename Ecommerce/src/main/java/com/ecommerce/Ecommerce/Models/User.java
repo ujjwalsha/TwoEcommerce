@@ -24,7 +24,7 @@ public class User {
     @Column(nullable = false)
     private String email;
     private String password;
-    private String Phone;
+    private String phone;
     private Boolean isActive = true;
     private String profileUrl;
 
