@@ -14,6 +14,7 @@ import java.util.List;
 // although you have to add @ResponseBody to all method for return data.
 @RestController // it is used for restfull api, Directly serialize object to JSON, where you want to retrun data not view.
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5174/")
 public class CategoryController {
 
     private final CategoryService categoryService;
