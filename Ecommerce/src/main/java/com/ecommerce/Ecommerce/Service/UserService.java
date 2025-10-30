@@ -82,14 +82,29 @@ public class UserService {
 
     public ResponseEntity<?> loginUser(UserRequest userRequest) {
 
-        Optional<User> user  = userRepo.findByPassword(userRequest.getPassword());
+        Optional<User> user  = userRepo.findByPassword(userRequest.getPassword().trim());
 
-        if(user.isEmpty() && !userRepo.existsByUsername(userRequest.getUsername()))
+        if(user.isEmpty() && !userRepo.existsByUsername(userRequest.getUsername().trim()))
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found!");
         }
 
-        String token = jwtService.generateToken(user.get());
+        new User();
+        User existUser;
+
+        System.out.println(userRequest);
+
+        if(user.isPresent())
+        {
+            existUser = user.get();
+        }
+        else {
+            throw new RuntimeException("User not found");
+        }
+
+        String token = jwtService.generateToken(existUser);
+
+
         System.out.println("token is : "+ token);
 
         //send jwt to cookies

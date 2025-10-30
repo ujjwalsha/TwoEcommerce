@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -42,6 +43,7 @@ public class UserController {
     {
         return userService.getLoggedInUser(request);
     }
+
 
     @PostMapping("/users/login")
     public ResponseEntity<?> LoginUser(@RequestBody UserRequest userRequest)

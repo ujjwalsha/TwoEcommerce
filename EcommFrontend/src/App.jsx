@@ -5,6 +5,7 @@ import Home from './Components/Home'
 import Contact from './Components/Contact'
 import axios from 'axios'
 import About from './Components/About'
+import Auth from './Components/Auth'
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
         <Route path='/' element= {<Home handleLocation={handleLocation} Location={Location} />}/>
         <Route path='/contact' element = {<Contact handleLocation={handleLocation} Location={Location} />}/>
         <Route path='/About' element = {<About handleLocation={handleLocation} Location={Location} />}/>
+        <Route path='/Auth' element = {<Auth handleLocation={handleLocation} Location={Location}/>}/>
       </Routes>
     </Router>
   )

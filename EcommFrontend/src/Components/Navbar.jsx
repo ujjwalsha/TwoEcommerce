@@ -33,13 +33,23 @@ function Navbar({ handleLocation, Location}) {
             navigate("/")
     }
 
+    const handleAccount = () =>{
+
+        if(location.pathname === "/")
+        {
+            navigate("/Auth");
+        }
+        else
+            navigate("/")
+    }
+
 
     useEffect(()=>{
         console.log("location is ",Location.address);
 
         if(Location.address !== undefined)
         {   
-            setCity(Location.address.county);
+            setCity(Location.address.county || Location.address.city);
             setPin(Location.address.postcode)
         }
         
@@ -49,13 +59,13 @@ function Navbar({ handleLocation, Location}) {
 
   return (
     <div className='navbar p-3 border-2 flex gap-2.5 justify-between items-center'>
-        <h1 className='font-semibold text-2xl line-through' >OneEcommerce</h1>
+         <a href="/" className='font-semibold text-2xl line-through'>OneEcommerce</a>
         <div className='location flex'>
             <button  
                 className='p-1 cursor-pointer'
                 onClick={handleLocation}
             ><LocationPinIcon fontSize='large'></LocationPinIcon></button>
-            <p className='font-semibold'>Deliver to {City.length === 0 ? "Update Location" : City} {Pin.length === 0 ? "": Pin} </p>
+            <p className='font-semibold'>Deliver to {City.length  === 0 ? "Update Location" : City} {Pin.length === 0 ? "": Pin} </p>
         </div>
         
         <div className='search-bar border flex justify-center items-center'>
@@ -83,6 +93,7 @@ function Navbar({ handleLocation, Location}) {
             >Contact</button>
             <button 
                 className='hover:border p-1 cursor-pointer'
+                onClick={handleAccount}
             ><AccountCircleIcon fontSize='large'></AccountCircleIcon></button>
         </div>
     </div>
