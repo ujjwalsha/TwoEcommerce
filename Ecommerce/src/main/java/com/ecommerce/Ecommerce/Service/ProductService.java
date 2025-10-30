@@ -79,4 +79,8 @@ public class ProductService {
 
         return ResponseEntity.status(HttpStatus.OK).body(existProducts);
     }
+
+    public List<Product> getAllProductInCategory() {
+        return productRepo.findAll();
+    }
 }

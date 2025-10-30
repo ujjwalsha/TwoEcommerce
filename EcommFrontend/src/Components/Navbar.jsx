@@ -58,21 +58,21 @@ function Navbar({ handleLocation, Location}) {
 
 
   return (
-    <div className='navbar p-3 border-2 flex gap-2.5 justify-between items-center'>
+    <div className='navbar p-2 flex gap-2.5 justify-between items-center'>
          <a href="/" className='font-semibold text-2xl line-through'>OneEcommerce</a>
         <div className='location flex'>
             <button  
-                className='p-1 cursor-pointer'
+                className='cursor-pointer'
                 onClick={handleLocation}
             ><LocationPinIcon fontSize='large'></LocationPinIcon></button>
-            <p className='font-semibold'>Deliver to {City.length  === 0 ? "Update Location" : City} {Pin.length === 0 ? "": Pin} </p>
+            <p className='font-semibold text-sm'>Deliver to {City.length  === 0 ? "Update Location" : City} {Pin.length === 0 ? "": Pin} </p>
         </div>
         
         <div className='search-bar border flex justify-center items-center'>
             <button className='hover:border p-2 cursor-pointer '>All</button>
             <input type="text" 
-                className='w-xl p-2 border border-gray-600'
-                placeholder='search products.....'
+                className='w-xl p-2 border border-gray-400'
+                placeholder='search products..........'
             />
             <button className='hover:border p-2 cursor-pointer font-semibold bg-white text-black'><SearchIcon className='font-semibold'></SearchIcon></button>
         </div>

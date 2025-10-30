@@ -27,7 +27,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
+    @GetMapping("/allProducts")
     public ResponseEntity<List<Product>> getProducts(HttpServletRequest request){
         return new ResponseEntity<>(productService.getAllProducts(request), HttpStatus.ACCEPTED);
     }
@@ -52,6 +52,13 @@ public class ProductController {
     {
         return productService.getByCategoryId(categoryId);
     }
+
+    @GetMapping("/category/0")
+    public List<Product> getAllProductInCategory()
+    {
+        return productService.getAllProductInCategory();
+    }
+
 
     //@RequestBody -- used to bind the HTTP request body to java Object where you receive JSON OR XML data from a client
     @PostMapping("/product/add/{categoryId}")

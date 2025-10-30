@@ -5,8 +5,6 @@ import toast, {Toaster} from 'react-hot-toast'
 
 function Auth({handleLocation, Location}) {
 
-    const [isLoginMode, setIsLoginMode] = useState(true);
-
     const [username, setUsername] = useState("")
     const [password, setpassword] = useState("")
 
@@ -38,7 +36,7 @@ function Auth({handleLocation, Location}) {
         }
 
         setUsername("");
-        setpassword("");
+        setpassword("")
     }
 
 

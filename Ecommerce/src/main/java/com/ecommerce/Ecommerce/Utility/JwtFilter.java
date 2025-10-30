@@ -48,17 +48,15 @@ public class JwtFilter extends OncePerRequestFilter {
             username = jwtService.extractUsername(token);
             request.setAttribute("username", username);
         }
-        else if(!request.getRequestURI().contains("/login") && !request.getRequestURI().contains("/register"))
+        else if(!request.getRequestURI().contains("/login")
+                && !request.getRequestURI().contains("/register")
+                && !request.getRequestURI().contains("/allProducts")
+                && !request.getRequestURI().contains("/categories")
+                && !request.getRequestURI().contains("/category"))
         {
             response.getWriter().write("Unauthorized or invalid token");
             return;
         }
-
-//        if("OPTIONS".equalsIgnoreCase(request.getMethod()))
-//        {
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            return;
-//        }
 
         filterChain.doFilter(request, response);
     }
