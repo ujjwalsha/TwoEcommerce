@@ -3,6 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import LocationPinIcon from '@mui/icons-material/LocationPin';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
 function Navbar({ handleLocation, Location}) {
@@ -71,15 +72,15 @@ function Navbar({ handleLocation, Location}) {
         <div className='search-bar border flex justify-center items-center'>
             <button className='hover:border p-2 cursor-pointer '>All</button>
             <input type="text" 
-                className='w-xl p-2 border border-gray-400'
+                className='w-[30em] p-2 border border-gray-400'
                 placeholder='search products..........'
             />
             <button className='hover:border p-2 cursor-pointer font-semibold bg-white text-black'><SearchIcon className='font-semibold'></SearchIcon></button>
         </div>
 
         <div className='menu-items flex justify-between p-2 w-xs items-center'>
-            <select className="ui dropdown border font-semibold p-2 bg-[#242424]">
-                <option value="">EN</option>
+            <select className="ui dropdown font-semibold bg-white text-gray-700">
+                <option value="1">EN</option>
                 <option value="1">Hindi</option>
                 <option value="0">French</option>
             </select>
@@ -91,6 +92,11 @@ function Navbar({ handleLocation, Location}) {
                 className='hover:border p-2 cursor-pointer font-semibold'
                 onClick={handleContact}
             >Contact</button>
+            <button
+                className='hover:border p-2 cursor-pointer font-semibold'
+            >
+                <ShoppingCartIcon fontSize='medium'></ShoppingCartIcon>
+            </button>
             <button 
                 className='hover:border p-1 cursor-pointer'
                 onClick={handleAccount}

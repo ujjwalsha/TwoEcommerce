@@ -6,6 +6,8 @@ import Contact from './Components/Contact'
 import axios from 'axios'
 import About from './Components/About'
 import Auth from './Components/Auth'
+import ProductPage from './Components/ProductPage'
+import { LoaderIcon } from 'react-hot-toast'
 
 function App() {
 
@@ -29,8 +31,6 @@ function App() {
         
         })
     }
-
-
 
   return (
     <Router>

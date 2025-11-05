@@ -3,15 +3,14 @@ import React, { useEffect, useState } from 'react'
 
 import Navbar from './Navbar';
 import axios from 'axios'
-import { dividerClasses } from '@mui/material/Divider';
-import Error from './Error';
+import Products from './Products';
 
 function Home({handleLocation, Location}) {
 
     const [Category, setCategory] = useState([]);
     const [Product, setProduct] = useState([]);
     const [categoryId, setCategoryId] = useState(0);
-    const [allTrigger, setAllTrigger] = useState(false);
+    
 
     useEffect(()=>{
         console.log("AA gye h");
@@ -40,7 +39,6 @@ function Home({handleLocation, Location}) {
     },[categoryId])
 
 
-
     return (
         <div className='Home-container'>
             <Navbar handleLocation={handleLocation} Location={Location} />
@@ -64,45 +62,29 @@ function Home({handleLocation, Location}) {
                         
                     ) 
                     : (
-                        <p>No category</p>
+                        <p>No category 😒</p>
                     )
                 }
             </div>
+            
+            {/* filter sorting products and results */}
 
-            <div className='products-container p-2'>
-                {Product.length ? (
-                        <div className='product flex gap-5 justify-start items-start'>
-                            {
-                                Product.map((data)=>(
-                                    <div className=' hover:border cursor-pointer h-fit w-xs p-2' key={data.id}>
-                                        <img 
-                                            src={data.imageUrl || "https://placehold.co/600x400"}
-                                            alt={data.imageUrl}
-                                            className='w-xs h-xl'
-                                        />
-                                        <div className='flex justify-between p-1'>
-                                            <h5 className='font-semibold'>{data.name}</h5>
-                                            <p className='font-semibold'>${data.price}</p>
-                                        </div>
-
-                                        <div className='description p-1'>
-                                            <p>{data.brand}</p>
-                                            <p>{data.description}</p>
-                                        </div>
-
-                                        <div className='flex justify-center'>
-                                            <p className='text-green-500'>{data.stockQuantity} Stocks Available</p>
-                                        </div>
-                                        
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    ) : (
-                        <Error />
-                    )
-                }
+            <div className='filter-section p-2 flex items-center justify-between'>
+                <p className='font-semibold'>{Product.length} results</p>
+                <select className="ui dropdown text-black  border font-semibold p-1 bg-white">
+                    sort by:
+                    <option value="">Featured</option>
+                    <option value="1">Price: Low to High</option>
+                    <option value="0">Price: High to Low</option>
+                    <option value="0">Avg. Customer Review</option>
+                    <option value="0">Newest Arrivals</option>
+                    <option value="0">Best Sellers</option>
+                </select>
             </div>
+            
+            
+            <Products Product={Product} />
+            
         </div>
     )
 }

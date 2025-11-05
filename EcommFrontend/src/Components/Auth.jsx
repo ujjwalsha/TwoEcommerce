@@ -7,6 +7,7 @@ function Auth({handleLocation, Location}) {
 
     const [username, setUsername] = useState("")
     const [password, setpassword] = useState("")
+    const [isSignInActive, setIsSignupActive] = useState(false);
 
 
 
@@ -26,17 +27,15 @@ function Auth({handleLocation, Location}) {
             
             toast.success('Logged in successfully!')
             console.log(res.data);
-            
         }
         catch(error)
         {
             console.error(error);
-            toast.error("This didn't work.")
-            
+            toast.error("Incorrect Credentials");
         }
 
         setUsername("");
-        setpassword("")
+        setpassword("");
     }
 
 
@@ -44,22 +43,39 @@ function Auth({handleLocation, Location}) {
     <div className='Auth-container'>
         <Navbar handleLocation={handleLocation} Location={Location} />
         <div className='login-container flex mt-20 justify-center'>
-       
             <form className='flex p-2 flex-col border gap-2 '>
-                <input 
-                    type="text" 
-                    placeholder='Enter username'
-                    className='p-2 border w-xs font-semibold'
-                    required
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input 
-                    type="password" 
-                    placeholder='Enter password' 
-                    className='p-2 border w-xs font-semibold'
-                    required
-                    onChange={(e) => setpassword(e.target.value)}
-                />
+
+
+            {
+                !isSignInActive && (
+                    <input 
+                        type="text" 
+                        placeholder='Enter username'
+                        value={username}
+                        className='p-2 border w-xs font-semibold'
+                        required
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                )
+            }
+
+
+            
+            {
+                !isSignInActive && (
+                    <input 
+                        type="password" 
+                        placeholder='Enter password' 
+                        value={password}
+                        className='p-2 border w-xs font-semibold'
+                        required
+                        onChange={(e) => setpassword(e.target.value)}
+                    />
+                )
+            }
+               
+               
+
                 <div className='flex  justify-end'>
                     <a href="">Forget Password!</a>
                 </div>
@@ -75,9 +91,27 @@ function Auth({handleLocation, Location}) {
                 />
 
                 <div className='flex justify-center'>
-                    <p>Don't have an account: Sign Up</p> 
+
+                    {
+                        !isSignInActive ? 
+  
+                            <p className='text-gray-500'>Don't have an account:
+                            <button 
+                                href="/register" 
+                                className='text-blue-700 hover:underline'
+                                onClick={()=> setIsSignupActive(false)}
+                            >Sign Up</button></p>
+        
+                         :
+                            <p className='text-gray-500'> you have an account:
+                            <button 
+                            href="/register" 
+                            className='text-blue-700 hover:underline'
+                            onClick={()=> setIsSignupActive(true)}
+                            >Sign in</button></p>
+                    }
+                     
                 </div>
-                
             </form>
             
 
