@@ -4,6 +4,7 @@ import LocationPinIcon from '@mui/icons-material/LocationPin';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import axios from 'axios';
 
 
 function Navbar({ handleLocation, Location}) {
@@ -13,6 +14,7 @@ function Navbar({ handleLocation, Location}) {
     
     const [City, setCity] = useState("");
     const [Pin, setPin] = useState("");
+    const [Category, SetCategory] = useState([]);
 
     const handleContact = () =>{
 
@@ -44,6 +46,17 @@ function Navbar({ handleLocation, Location}) {
             navigate("/")
     }
 
+    useState(() =>{
+
+        axios.get(`http://localhost:8080/api/categories`)
+        .then(response =>{
+            SetCategory(response.data)
+            console.log(response.data)
+        })
+        .catch(error =>{
+            console.log(error);
+        })
+    }, [])
 
     useEffect(()=>{
         console.log("location is ",Location.address);
@@ -56,10 +69,8 @@ function Navbar({ handleLocation, Location}) {
         
     },[handleLocation])
 
-
-
   return (
-    <div className='navbar p-2 flex gap-2.5 justify-between items-center'>
+    <div className='navbar sticky top-0  backdrop-blur-lg p-2 flex gap-2.5 justify-between items-center'>
          <a href="/" className='font-semibold text-2xl line-through'>OneEcommerce</a>
         <div className='location flex'>
             <button  
@@ -70,7 +81,23 @@ function Navbar({ handleLocation, Location}) {
         </div>
         
         <div className='search-bar border flex justify-center items-center'>
-            <button className='hover:border p-2 cursor-pointer '>All</button>
+
+            <select className='w-30 h-10 bg-white text-black text-sm border-none'>
+                <option value="">All</option>
+                {
+                    Category.length ?
+                    (
+                        Category.map((cat) =>(
+                            <option className='text-black border-none ' key={cat.id}>{cat.name}</option>
+                        ))
+                    )
+                    :
+                    (
+                        <option value="">Category</option>
+                    )
+                }
+            </select>
+           
             <input type="text" 
                 className='w-[30em] p-2 border border-gray-400'
                 placeholder='search products..........'
@@ -92,11 +119,17 @@ function Navbar({ handleLocation, Location}) {
                 className='hover:border p-2 cursor-pointer font-semibold'
                 onClick={handleContact}
             >Contact</button>
-            <button
-                className='hover:border p-2 cursor-pointer font-semibold'
-            >
-                <ShoppingCartIcon fontSize='medium'></ShoppingCartIcon>
-            </button>
+            <div className='cart-section  relative'>
+                
+                
+                <button
+                    className='cursor-pointer font-semibold'
+                >
+                    <p className='text-red-600 font-bold w-full bg-white text-center  rounded-full left-2 -top-2  absolute'>0</p>
+                    <ShoppingCartIcon fontSize='medium'></ShoppingCartIcon>
+                </button>
+            </div>
+            
             <button 
                 className='hover:border p-1 cursor-pointer'
                 onClick={handleAccount}

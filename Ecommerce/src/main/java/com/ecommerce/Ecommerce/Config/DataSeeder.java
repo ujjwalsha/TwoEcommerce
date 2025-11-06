@@ -41,7 +41,22 @@ public class DataSeeder implements CommandLineRunner {
         Category home = new Category();
         home.setName("Home and Kitchen");
 
-        categoryRepo.saveAll(Arrays.asList(electronics, clothing, home));
+        Category Fashion = new Category();
+        Fashion.setName("Fashion & Apparel");
+
+        Category Furniture = new Category();
+        Furniture.setName("Furniture");
+
+        Category Bedding  = new Category();
+        Bedding.setName("Bedding & Bath");
+
+        Category Lighting = new Category();
+        Lighting.setName("Lighting");
+
+        Category Entertainment = new Category();
+        Entertainment.setName("Entertainment & Hobbies");
+
+        categoryRepo.saveAll(Arrays.asList(electronics, clothing, home, Fashion, Furniture, Bedding, Lighting, Entertainment));
 
         Product Phone = new Product();
         Phone.setName("iPhone 15 Pro Max");

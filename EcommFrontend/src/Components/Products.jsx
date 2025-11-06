@@ -2,6 +2,7 @@ import React from 'react'
 import ProductPage from './ProductPage';
 import { useEffect, useState } from 'react'
 import Error from './Error';
+import Loading from './Loading';
 
 function Products({Product}) {
 
@@ -50,6 +51,7 @@ function Products({Product}) {
                     </div>
                 ) : (
                     <Error />
+                    // <Loading/>
                 )
             }
         </>

@@ -2,40 +2,48 @@ import React, { useState } from 'react'
 import Navbar from './Navbar'
 import axios from 'axios';
 import toast, {Toaster} from 'react-hot-toast'
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
+import EmailIcon from '@mui/icons-material/Email';
 
 function Auth({handleLocation, Location}) {
 
     const [username, setUsername] = useState("")
     const [password, setpassword] = useState("")
-    const [isSignInActive, setIsSignupActive] = useState(false);
-
-
+    const [email, setemail] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isLoginMode, setIsLoginMode] = useState(true);
 
     const handleSubmit = async(e) =>{
         e.preventDefault();
-        console.log(username, password);
-        
-        try{
-            const res = await axios.post("http://localhost:8080/api/users/login",
-                {username, password},
-                {withCredentials : true,
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                }
-            )
-            
-            toast.success('Logged in successfully!')
-            console.log(res.data);
-        }
-        catch(error)
-        {
-            console.error(error);
-            toast.error("Incorrect Credentials");
-        }
 
-        setUsername("");
-        setpassword("");
+        if(isLoginMode)
+        {
+            try{
+                const res = await axios.post("http://localhost:8080/api/users/login",
+                    {username, password},
+                    {withCredentials : true,
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                    }
+                )
+                
+                toast.success('Logged in successfully!')
+            }
+            catch(error)
+            {
+                toast.error("Incorrect Credentials");
+            }
+    
+            setUsername("");
+            setpassword("");
+        }
+        else{
+            toast('You are in register!', {
+                icon: '👏',
+              });
+        }
     }
 
 
@@ -43,26 +51,41 @@ function Auth({handleLocation, Location}) {
     <div className='Auth-container'>
         <Navbar handleLocation={handleLocation} Location={Location} />
         <div className='login-container flex mt-20 justify-center'>
-            <form className='flex p-2 flex-col border gap-2 '>
+
+            <form className='flex p-2 flex-col  items-center border gap-2 '>
 
 
-            {
-                !isSignInActive && (
+                <div className='relative border w-xs  flex items-center'>
                     <input 
                         type="text" 
                         placeholder='Enter username'
                         value={username}
-                        className='p-2 border w-xs font-semibold'
+                        className='p-2 border w-xs  font-semibold'
                         required
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                )
-            }
-
-
+                    <PersonIcon className='right-4 absolute text-gray-300 '></PersonIcon>
+                </div>
+    
             
-            {
-                !isSignInActive && (
+                {
+                    !isLoginMode && (
+
+                        <div className='relative border w-xs  flex items-center' >
+                            <input 
+                                type="text" 
+                                placeholder='Enter your Email'
+                                value={email}
+                                className='p-2 border w-xs font-semibold'
+                                required
+                                onChange={(e) => setemail(e.target.value)}
+                            />
+                            <EmailIcon className='right-4 absolute text-gray-300 '></EmailIcon>
+                        </div>
+                    )
+                }
+
+                <div className='relative border w-xs  flex items-center'>
                     <input 
                         type="password" 
                         placeholder='Enter password' 
@@ -71,17 +94,34 @@ function Auth({handleLocation, Location}) {
                         required
                         onChange={(e) => setpassword(e.target.value)}
                     />
-                )
-            }
-               
-               
-
-                <div className='flex  justify-end'>
-                    <a href="">Forget Password!</a>
+                    <LockIcon className='right-4 absolute text-gray-300'></LockIcon>
                 </div>
-               
+                    
+                
+
+                {
+                    !isLoginMode && (
+                        <input 
+                            type="password" 
+                            placeholder='Confirm Password' 
+                            value={confirmPassword}
+                            className='p-2 border w-xs font-semibold'
+                            required
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                    )
+                }
+
+                {
+                    isLoginMode && (
+                        <div className='flex  justify-end w-full'>
+                                <a href="">Forget Password!</a>
+                        </div>
+                    )
+                }
+                    
                 <button 
-                    className='bg-white text-black font-semibold cursor-pointer p-2 hover:border'
+                    className='bg-white w-full text-black font-semibold cursor-pointer p-2 hover:border'
                     onClick={handleSubmit}
                     type='submit'
                 >Submit</button>
@@ -90,31 +130,26 @@ function Auth({handleLocation, Location}) {
                     reverseOrder={false}
                 />
 
-                <div className='flex justify-center'>
 
+
+                <div className='flex justify-center'>
                     {
-                        !isSignInActive ? 
-  
+                        isLoginMode ? 
                             <p className='text-gray-500'>Don't have an account:
-                            <button 
-                                href="/register" 
-                                className='text-blue-700 hover:underline'
-                                onClick={()=> setIsSignupActive(false)}
-                            >Sign Up</button></p>
+                            <a 
+                                className='text-white cursor-pointer hover:underline'
+                                onClick={()=> setIsLoginMode(false)}
+                            >Sign Up</a></p>
         
                          :
                             <p className='text-gray-500'> you have an account:
-                            <button 
-                            href="/register" 
-                            className='text-blue-700 hover:underline'
-                            onClick={()=> setIsSignupActive(true)}
-                            >Sign in</button></p>
+                            <a 
+                                className='text-white cursor-pointer hover:underline'
+                                onClick={() => setIsLoginMode(true)}
+                            >Sign in</a></p>
                     }
-                     
                 </div>
             </form>
-            
-
         </div>
     </div>
   )

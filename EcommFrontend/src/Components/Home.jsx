@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar';
 import axios from 'axios'
 import Products from './Products';
+import Footer from './Footer';
 
 function Home({handleLocation, Location}) {
 
@@ -58,8 +59,6 @@ function Home({handleLocation, Location}) {
                                     >{cat.name}</button>
                                 </div>
                         ))
-                     
-                        
                     ) 
                     : (
                         <p>No category 😒</p>
@@ -71,7 +70,7 @@ function Home({handleLocation, Location}) {
 
             <div className='filter-section p-2 flex items-center justify-between'>
                 <p className='font-semibold'>{Product.length} results</p>
-                <select className="ui dropdown text-black  border font-semibold p-1 bg-white">
+                <select className="ui dropdown text-black  text-sm p-1 bg-white">
                     sort by:
                     <option value="">Featured</option>
                     <option value="1">Price: Low to High</option>
@@ -83,7 +82,9 @@ function Home({handleLocation, Location}) {
             </div>
             
             
-            <Products Product={Product} />
+            <Products Product={Product}  />
+
+            <Footer/>
             
         </div>
     )
