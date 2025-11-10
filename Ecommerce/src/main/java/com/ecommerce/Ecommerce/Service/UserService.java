@@ -34,7 +34,7 @@ public class UserService {
         System.out.println(user);
 
         if(userRepo.existsByEmail(user.getEmail())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already registered");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "Users already exists!"));
         }
 
         if(user.getUsername() == null || user.getUsername().trim().isEmpty())
@@ -71,13 +71,12 @@ public class UserService {
 
         temp.setPassword(user.getPassword());
         temp.setIsActive(user.getIsActive());
-        temp.setProfileUrl(user.getProfileUrl());
         temp.setPhone(user.getPhone());
         temp.setRole(user.getRole() != null ? user.getRole() : Role.USER);  //default user
 
         userRepo.save(temp);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Register successfully!");
     }
 
     public ResponseEntity<?> loginUser(UserRequest userRequest) {
@@ -131,7 +130,6 @@ public class UserService {
         temp.setUsername(user.getUsername());
         temp.setEmail(user.getEmail());
         temp.setPhone(user.getPhone());
-        temp.setProfileUrl(user.getProfileUrl());
 
         userRepo.save(temp);
 

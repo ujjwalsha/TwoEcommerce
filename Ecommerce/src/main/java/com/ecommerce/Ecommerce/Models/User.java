@@ -26,12 +26,12 @@ public class User {
     private String password;
     private String phone;
     private Boolean isActive = true;
-    private String profileUrl;
 
     @JsonIgnore
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Role role;
 
     public User(){

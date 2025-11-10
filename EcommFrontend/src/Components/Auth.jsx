@@ -5,12 +5,14 @@ import toast, {Toaster} from 'react-hot-toast'
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email';
+import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 
 function Auth({handleLocation, Location}) {
 
     const [username, setUsername] = useState("")
     const [password, setpassword] = useState("")
     const [email, setemail] = useState("");
+    const [phone, setPhone] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isLoginMode, setIsLoginMode] = useState(true);
 
@@ -22,7 +24,7 @@ function Auth({handleLocation, Location}) {
             try{
                 const res = await axios.post("http://localhost:8080/api/users/login",
                     {username, password},
-                    {withCredentials : true,
+                    {
                         headers: {
                             "Content-Type": "application/json"
                         },
@@ -40,10 +42,41 @@ function Auth({handleLocation, Location}) {
             setpassword("");
         }
         else{
-            toast('You are in register!', {
-                icon: '👏',
-              });
+            try{
+                console.log(username, email, password, phone);
+
+                const res = await axios.post("http://localhost:8080/api/users/register",
+                    {username, email, password, phone},
+                    {
+                        headers:{
+                            "Content-Type": "application/json"
+                        },
+                })
+
+                console.log("response is : ", res);
+
+                toast(res, {
+                    icon: '✌️',
+                 });
+                
+            }
+            catch(error)
+            {
+                const result = error.response.data;
+                console.log(result);
+                 toast(result.message, {
+                    icon: '😒',
+                 });
+            }
+
+            setPhone("");
+            setUsername("");
+            setemail("");
+            setpassword("");
         }
+
+
+
     }
 
 
@@ -71,17 +104,31 @@ function Auth({handleLocation, Location}) {
                 {
                     !isLoginMode && (
 
-                        <div className='relative border w-xs  flex items-center' >
-                            <input 
-                                type="text" 
-                                placeholder='Enter your Email'
-                                value={email}
-                                className='p-2 border w-xs font-semibold'
-                                required
-                                onChange={(e) => setemail(e.target.value)}
-                            />
-                            <EmailIcon className='right-4 absolute text-gray-300 '></EmailIcon>
-                        </div>
+                        <>
+                            <div className='relative border w-xs  flex items-center' >
+                                <input 
+                                    type="text" 
+                                    placeholder='Enter your Email'
+                                    value={email}
+                                    className='p-2 border w-xs font-semibold'
+                                    required
+                                    onChange={(e) => setemail(e.target.value)}
+                                />
+                                <EmailIcon className='right-4 absolute text-gray-300 '></EmailIcon>
+                            </div>
+
+                            <div className='relative border w-xs  flex items-center' >
+                                <input 
+                                    type="text" 
+                                    placeholder='Enter Phone Number'
+                                    value={phone}
+                                    className='p-2 border w-xs font-semibold'
+                                    required
+                                    onChange={(e) => setPhone(e.target.value)}
+                                />
+                                <PhoneAndroidIcon className='right-4 absolute text-gray-300'></PhoneAndroidIcon>
+                            </div>
+                        </>
                     )
                 }
 
