@@ -6,8 +6,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+import { useNavigate } from 'react-router-dom';
 
-function Auth({handleLocation, Location}) {
+function Auth({handleLocation, Location, setIsLogin, setUser}) {
+
+    const navigate = useNavigate();
 
     const [username, setUsername] = useState("")
     const [password, setpassword] = useState("")
@@ -30,12 +33,27 @@ function Auth({handleLocation, Location}) {
                         },
                     }
                 )
-                
-                toast.success('Logged in successfully!')
+
+                toast(res.data.message || "Default message", {
+                    icon: '😎',
+                });
+
+                setIsLogin(true);
+                setUser(username);
+
+                setTimeout(()=>{
+                    navigate("/");
+                }, 2000)
+
             }
             catch(error)
             {
-                toast.error("Incorrect Credentials");
+                const result = error.response.data.message;
+
+                console.log(result);
+                toast(result, {
+                    icon: '😭',
+                });
             }
     
             setUsername("");
@@ -43,22 +61,39 @@ function Auth({handleLocation, Location}) {
         }
         else{
             try{
-                console.log(username, email, password, phone);
+                if(password === confirmPassword)
+                {
 
-                const res = await axios.post("http://localhost:8080/api/users/register",
-                    {username, email, password, phone},
-                    {
-                        headers:{
-                            "Content-Type": "application/json"
-                        },
-                })
+                     const res = await axios.post("http://localhost:8080/api/users/register",
+                                {username, email, password, phone},
+                                {
+                                    headers:{
+                                        "Content-Type": "application/json"
+                                    },
+                                })
 
-                console.log("response is : ", res);
+                    console.log("response is : ", res);
+                    setIsLoginMode(false);
 
-                toast(res, {
-                    icon: '✌️',
-                 });
+                    toast(res.data, {
+                         icon: '✌️',
+                    });
+
                 
+                    setPhone("");
+                    setUsername("");
+                    setemail("");
+                    setpassword("");
+                    setConfirmPassword("");
+                    
+                }
+                else{
+
+                     toast("Passwords do not match. Please try again!.", {
+                        icon: '😭',
+                    });
+                }
+  
             }
             catch(error)
             {
@@ -67,16 +102,8 @@ function Auth({handleLocation, Location}) {
                  toast(result.message, {
                     icon: '😒',
                  });
-            }
-
-            setPhone("");
-            setUsername("");
-            setemail("");
-            setpassword("");
+            }   
         }
-
-
-
     }
 
 
@@ -86,8 +113,6 @@ function Auth({handleLocation, Location}) {
         <div className='login-container flex mt-20 justify-center'>
 
             <form className='flex p-2 flex-col  items-center border gap-2 '>
-
-
                 <div className='relative border w-xs  flex items-center'>
                     <input 
                         type="text" 
@@ -144,8 +169,6 @@ function Auth({handleLocation, Location}) {
                     <LockIcon className='right-4 absolute text-gray-300'></LockIcon>
                 </div>
                     
-                
-
                 {
                     !isLoginMode && (
                         <input 
@@ -176,8 +199,6 @@ function Auth({handleLocation, Location}) {
                     position="top-center"
                     reverseOrder={false}
                 />
-
-
 
                 <div className='flex justify-center'>
                     {

@@ -1,17 +1,31 @@
 import React from 'react'
 
-function Footer() {
+function Footer({isLogin}) {
   return (
     <div className='footer-section'>
-        <hr className='m-2 mt-10' />
-        <div className='flex flex-col justify-between gap-2 items-center'>
-            <h1 className='font-semibold text-2xl'>See personalized recommendations</h1>
-            <a
-                href='/Auth'
-                className='font-semibold bg-white hover:bg-gray-300 text-center cursor-pointer text-black p-2 rounded-xl w-sm'
-            >Sign in</a>
-            <p>New customer? <a className='text-blue-400' href=""> Start here.</a></p>
-        </div>
+        
+
+        {
+            !isLogin ? (
+                <>
+                    <hr className='m-2 mt-10' />
+                    <div className='flex flex-col justify-between gap-2 items-center'>
+                        <h1 className='font-semibold text-2xl'>See personalized recommendations</h1>
+                        <a
+                        href='/Auth'
+                        className='font-semibold bg-white hover:bg-gray-300 text-center cursor-pointer text-black p-2 rounded-xl w-sm'
+                        >Sign in</a>
+                        <p>New customer? <a className='text-blue-400' href=""> Start here.</a></p>
+                    </div>
+                </>
+                
+            )
+            :
+            (
+                ""
+            )
+        }
+        
 
         <hr className='m-2 mt-10' />
 

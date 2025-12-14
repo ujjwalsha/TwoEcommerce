@@ -6,7 +6,7 @@ import axios from 'axios'
 import Products from './Products';
 import Footer from './Footer';
 
-function Home({handleLocation, Location}) {
+function Home({handleLocation, Location, isLogin,user }) {
 
     const [Category, setCategory] = useState([]);
     const [Product, setProduct] = useState([]);
@@ -42,7 +42,7 @@ function Home({handleLocation, Location}) {
 
     return (
         <div className='Home-container'>
-            <Navbar handleLocation={handleLocation} Location={Location} />
+            <Navbar handleLocation={handleLocation} Location={Location} user={user} />
             <div className='category-section flex gap-2 p-2 border '>
             <button 
                 className='hover:bg-white hover:rounded-xl hover:text-black cursor-pointer  p-1'
@@ -84,7 +84,7 @@ function Home({handleLocation, Location}) {
             
             <Products Product={Product}  />
 
-            <Footer/>
+            <Footer isLogin={isLogin} />
             
         </div>
     )

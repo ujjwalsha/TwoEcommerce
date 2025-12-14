@@ -61,7 +61,7 @@ public class UserService {
 
         if(user.getPassword() == null || !user.getPassword().matches(PASSWORD_PATTERN))
         {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password must be at least 8 characters long and include uppercase, lowercase, number and special character");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message","Password must be at least 8 characters long and include uppercase, lowercase, number and special character"));
         }
 
 
@@ -85,7 +85,7 @@ public class UserService {
 
         if(user.isEmpty() && !userRepo.existsByUsername(userRequest.getUsername().trim()))
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message","user not found!"));
         }
 
         new User();

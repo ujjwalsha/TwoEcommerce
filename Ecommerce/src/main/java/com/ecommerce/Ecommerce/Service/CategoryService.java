@@ -1,8 +1,21 @@
 package com.ecommerce.Ecommerce.Service;
 
 
+import com.cloudinary.api.exceptions.ApiException;
+import com.ecommerce.Ecommerce.Exception.ResourceNotFoundException;
 import com.ecommerce.Ecommerce.Models.Category;
+import com.ecommerce.Ecommerce.Payload.CategoryDTO;
+import com.ecommerce.Ecommerce.Payload.CategoryResponse;
 import com.ecommerce.Ecommerce.Repository.CategoryRepo;
+import org.hibernate.validator.internal.constraintvalidators.bv.time.past.AbstractPastInstantBasedValidator;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,61 +23,92 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service  //it used to indicate that applied service layer that contains business logic of an application
 public class CategoryService {
 
     private final CategoryRepo categoryRepo;
+    private ModelMapper modelMapper;
 
-    public CategoryService(CategoryRepo categoryRepo)
+    @Autowired
+    public CategoryService(CategoryRepo categoryRepo, ModelMapper modelMapper)
     {
         this.categoryRepo = categoryRepo;
+        this.modelMapper = modelMapper;
     }
 
 
-    public List<Category> getAllCategories() {
-        return categoryRepo.findAll();
-    }
+    public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) throws ApiException {
 
-    public ResponseEntity<?> addCategories(Category category) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
 
-        Optional<Category> existCate = categoryRepo.findByName(category.getName());
 
-        if(existCate.isPresent())
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Category> categoryPage = categoryRepo.findAll(pageDetails);
+
+        List<Category> categories = categoryPage.getContent();
+
+        if(categories.isEmpty())
         {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            throw new ApiException("No category created till now");
         }
 
-        categoryRepo.save(category);
+        List<CategoryDTO>  categoryDTOS = categories.stream()
+                .map(Category ->modelMapper.map(Category, CategoryDTO.class))
+                .toList();
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setContent(categoryDTOS);
+        categoryResponse.setPageNumber(categoryPage.getNumber());
+        categoryResponse.setLastPage(categoryPage.isLast());
+        categoryResponse.setPageSize(categoryPage.getSize());
+        categoryResponse.setTotalPage(categoryPage.getTotalPages());
+        categoryResponse.setTotalElements(categoryPage.getTotalElements());
+
+        return categoryResponse;
     }
 
-    public ResponseEntity<?> updateCategory(Long id, Category category) {
+    public CategoryDTO addCategories(CategoryDTO categoryDTO) throws ApiException {
 
-        Optional<Category> existCate = categoryRepo.findByName(category.getName());
+        Category category = modelMapper.map(categoryDTO, Category.class);
+        Optional<Category> categoryFromDb = categoryRepo.findByName(categoryDTO.getName());
 
-        if(existCate.isEmpty())
+        if(categoryFromDb.isPresent())
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new ApiException("Not exists");
         }
 
-        Category categoryName = existCate.get();
+        Category savedCategory = categoryRepo.save(category);
 
-        categoryName.setName(category.getName());
+        return modelMapper.map(savedCategory, CategoryDTO.class);
+    }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+    public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
+
+        Category savedCategory = categoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        Category category = modelMapper.map(categoryDTO, Category.class);
+
+        category.setId(id);
+        category.setName(categoryDTO.getName());
+
+        savedCategory = categoryRepo.save(category);
+
+        return modelMapper.map(savedCategory, CategoryDTO.class);
     }
 
 
-    public ResponseEntity<?> deleteCategory(Long id) {
+    public CategoryDTO deleteCategory(Long id) throws ApiException {
 
-        if(categoryRepo.existsById(id))
-        {
-            categoryRepo.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body("deleted successfully.");
-        }
+        Category category = categoryRepo.findById(id)
+                .orElseThrow(() -> new ApiException("Category not found"));
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
+        categoryRepo.delete(category);
+
+        return modelMapper.map(category, CategoryDTO.class);
     }
 }

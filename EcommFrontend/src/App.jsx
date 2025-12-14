@@ -12,6 +12,8 @@ import { LoaderIcon } from 'react-hot-toast'
 function App() {
 
   const [Location, setLocation] = useState([]);
+  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState("");
 
     const handleLocation = () =>{
         navigator.geolocation.getCurrentPosition((pos) =>{
@@ -22,7 +24,6 @@ function App() {
             
             axios.get(url)
             .then(response =>{
-                // console.log(response.data.address);
                 setLocation(response.data);
             })
             .catch(error =>{
@@ -35,10 +36,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element= {<Home handleLocation={handleLocation} Location={Location} />}/>
+        <Route path='/' element= {<Home handleLocation={handleLocation} Location={Location} isLogin={isLogin} user={user} />}/>
         <Route path='/contact' element = {<Contact handleLocation={handleLocation} Location={Location} />}/>
         <Route path='/About' element = {<About handleLocation={handleLocation} Location={Location} />}/>
-        <Route path='/Auth' element = {<Auth handleLocation={handleLocation} Location={Location}/>}/>
+        <Route path='/Auth' element = {<Auth handleLocation={handleLocation} Location={Location} setIsLogin={setIsLogin} setUser={setUser} />}/>
       </Routes>
     </Router>
   )

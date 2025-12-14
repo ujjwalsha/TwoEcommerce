@@ -4,9 +4,7 @@ import com.ecommerce.Ecommerce.Models.User;
 import com.ecommerce.Ecommerce.Models.UserRequest;
 import com.ecommerce.Ecommerce.Service.UserService;
 import com.ecommerce.Ecommerce.Utility.PasswordGenerator;
-import jakarta.persistence.GeneratedValue;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +41,6 @@ public class UserController {
     {
         return userService.getLoggedInUser(request);
     }
-
 
     @PostMapping("/users/login")
     public ResponseEntity<?> LoginUser(@RequestBody UserRequest userRequest)

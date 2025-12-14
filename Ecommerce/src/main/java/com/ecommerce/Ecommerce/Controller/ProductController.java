@@ -3,15 +3,13 @@ package com.ecommerce.Ecommerce.Controller;
 import com.ecommerce.Ecommerce.Models.Product;
 import com.ecommerce.Ecommerce.Service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,6 +18,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     public ProductController(ProductService productService)
@@ -29,6 +28,7 @@ public class ProductController {
 
     @GetMapping("/allProducts")
     public ResponseEntity<List<Product>> getProducts(HttpServletRequest request){
+        logger.info("Hello endpoint called");
         return new ResponseEntity<>(productService.getAllProducts(request), HttpStatus.ACCEPTED);
     }
 

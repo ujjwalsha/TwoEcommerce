@@ -7,7 +7,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import axios from 'axios';
 
 
-function Navbar({ handleLocation, Location}) {
+function Navbar({ handleLocation, Location, isLogin, user}) {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -15,6 +15,8 @@ function Navbar({ handleLocation, Location}) {
     const [City, setCity] = useState("");
     const [Pin, setPin] = useState("");
     const [Category, SetCategory] = useState([]);
+
+    const firstLetter = !isLogin ? user[0] : "";
 
     const handleContact = () =>{
 
@@ -56,6 +58,8 @@ function Navbar({ handleLocation, Location}) {
         .catch(error =>{
             console.log(error);
         })
+
+
     }, [])
 
     useEffect(()=>{
@@ -105,7 +109,7 @@ function Navbar({ handleLocation, Location}) {
             <button className='hover:border p-2 cursor-pointer font-semibold bg-white text-black'><SearchIcon className='font-semibold'></SearchIcon></button>
         </div>
 
-        <div className='menu-items flex justify-between p-2 w-xs items-center'>
+        <div className='menu-items flex justify-between p-2 gap-3 w-xs items-center'>
             <select className="ui dropdown font-semibold bg-white text-gray-700">
                 <option value="1">EN</option>
                 <option value="1">Hindi</option>
@@ -120,8 +124,6 @@ function Navbar({ handleLocation, Location}) {
                 onClick={handleContact}
             >Contact</button>
             <div className='cart-section  relative'>
-                
-                
                 <button
                     className='cursor-pointer font-semibold'
                 >
@@ -130,10 +132,22 @@ function Navbar({ handleLocation, Location}) {
                 </button>
             </div>
             
-            <button 
-                className='hover:border p-1 cursor-pointer'
-                onClick={handleAccount}
-            ><AccountCircleIcon fontSize='large'></AccountCircleIcon></button>
+            {
+                isLogin ?
+                (
+                    <button 
+                        className='hover:border p-1 cursor-pointer'
+                        onClick={handleAccount}
+                    ><AccountCircleIcon fontSize='large'></AccountCircleIcon></button>
+                )
+                :
+                (
+                    <div className='bg-white text-black w-9 h-9 rounded-full flex justify-center items-center'>
+                        <p className='text-black text-2xl font-semibold'>{firstLetter}</p>
+                    </div>
+                )
+            }
+            
         </div>
     </div>
   )
