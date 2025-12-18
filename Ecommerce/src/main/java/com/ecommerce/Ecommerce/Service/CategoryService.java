@@ -7,23 +7,15 @@ import com.ecommerce.Ecommerce.Models.Category;
 import com.ecommerce.Ecommerce.Payload.CategoryDTO;
 import com.ecommerce.Ecommerce.Payload.CategoryResponse;
 import com.ecommerce.Ecommerce.Repository.CategoryRepo;
-import org.hibernate.validator.internal.constraintvalidators.bv.time.past.AbstractPastInstantBasedValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service  //it used to indicate that applied service layer that contains business logic of an application
 public class CategoryService {
@@ -88,8 +80,9 @@ public class CategoryService {
 
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
 
-        Category savedCategory = categoryRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Category savedCategory =  categoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", id));
+
 
         Category category = modelMapper.map(categoryDTO, Category.class);
 

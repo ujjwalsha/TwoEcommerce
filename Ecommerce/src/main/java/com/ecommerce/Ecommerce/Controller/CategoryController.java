@@ -3,19 +3,13 @@ package com.ecommerce.Ecommerce.Controller;
 
 import com.cloudinary.api.exceptions.ApiException;
 import com.ecommerce.Ecommerce.Config.AppConstants;
-import com.ecommerce.Ecommerce.Models.Category;
 import com.ecommerce.Ecommerce.Payload.CategoryDTO;
 import com.ecommerce.Ecommerce.Payload.CategoryResponse;
 import com.ecommerce.Ecommerce.Service.CategoryService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 // Used to handling web request and return view (MVC), usually rendering web pages
@@ -68,10 +62,5 @@ public class CategoryController {
 
         return new ResponseEntity<>(deletedCategory, HttpStatus.OK);
     }
-
-
-
-
-
 
 }

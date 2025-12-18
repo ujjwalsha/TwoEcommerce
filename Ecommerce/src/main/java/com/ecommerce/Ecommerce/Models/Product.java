@@ -3,39 +3,45 @@ package com.ecommerce.Ecommerce.Models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.core.util.Json;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
-import java.net.ProtocolFamily;
 import java.util.Date;
 
 @Entity
 @Data //this is part of lombok library it will all constructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private String description;
     private String brand;
-    private BigDecimal price;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy")
-    private Date releaseDate;
+    private double price;
+    private double discount;
     private boolean productAvailable;
-    private int stockQuantity;
+    private Integer stockQuantity;
     private String imageUrl;
+    private double specialPrice;
 
-    public Product()
-    {
-        this.releaseDate = new Date();
-    }
+    @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy, HH:MM:SS")
+    @JsonIgnore
+    private Date createdAt;
+
+
+    @UpdateTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy, HH:MM:SS")
+    private Date updatedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

@@ -1,15 +1,19 @@
 package com.ecommerce.Ecommerce.Controller;
 
 import com.ecommerce.Ecommerce.Models.Product;
+import com.ecommerce.Ecommerce.Payload.ProductDTO;
+import com.ecommerce.Ecommerce.Payload.ProductResponse;
 import com.ecommerce.Ecommerce.Service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,14 +30,26 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/allProducts")
-    public ResponseEntity<List<Product>> getProducts(HttpServletRequest request){
+    //@RequestBody -- used to bind the HTTP request body to java Object where you receive JSON OR XML data from a client
+    @PostMapping("admin/categories/{categoryId}/product")
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO, @PathVariable Long categoryId)
+    {
+        ProductDTO savedProductDTO = productService.addProduct(productDTO, categoryId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProductDTO);
+    }
+
+    @GetMapping("/public/products")
+    public ResponseEntity<ProductResponse> getProducts(HttpServletRequest request){
+
         logger.info("Hello endpoint called");
-        return new ResponseEntity<>(productService.getAllProducts(request), HttpStatus.ACCEPTED);
+        ProductResponse productResponse = productService.getAllProducts(request);
+
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable int id){
+    public ResponseEntity<Product> getProductById(@PathVariable Long id){
 
         Product product = productService.getProductById(id);
 
@@ -47,10 +63,12 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/category/{categoryId}")
-    public List<Product> getProductByCategoryId(@PathVariable Long categoryId)
+    @GetMapping("/public/categories/{categoryId}/products")
+    public ResponseEntity<ProductResponse> getProductByCategoryId(@PathVariable Long categoryId)
     {
-        return productService.getByCategoryId(categoryId);
+        ProductResponse productResponse = productService.getByCategoryId(categoryId);
+
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     @GetMapping("/category/0")
@@ -59,18 +77,35 @@ public class ProductController {
         return productService.getAllProductInCategory();
     }
 
-
-    //@RequestBody -- used to bind the HTTP request body to java Object where you receive JSON OR XML data from a client
-    @PostMapping("/product/add/{categoryId}")
-    public ResponseEntity<?> addProduct(@RequestBody Product product, @PathVariable Long categoryId)
+    @GetMapping("/public/products/keyword")
+    public ResponseEntity<ProductResponse> searchProduct(@RequestParam(name = "query", required = false) String query)
     {
-        return productService.addProduct(product, categoryId);
+        ProductResponse productResponse =  productService.searchProduct(query);
+
+        return new ResponseEntity<>(productResponse, HttpStatus.FOUND);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> searchProduct(@RequestParam String q)
+    @PutMapping("/admin/products/{id}")
+    public ResponseEntity<ProductDTO>  updateProductById(@RequestBody ProductDTO productDTO, @PathVariable Long id)
     {
-        return productService.searchProduct(q);
+        ProductDTO updatedProductDTO = productService.updateProduct(productDTO, id);
+
+        return new ResponseEntity<>(updatedProductDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/admin/products/{id}")
+    public ResponseEntity<ProductDTO> deleteProductById(@PathVariable Long id)
+    {
+        ProductDTO deletedProduct = productService.deleteProductById(id);
+
+        return new ResponseEntity<>(deletedProduct, HttpStatus.OK);
+    }
+
+    @PutMapping("/products/{id}/image")
+    public ResponseEntity<ProductDTO> updateProductImage(@PathVariable Long id,
+                                                         @RequestParam(name = "image")MultipartFile image) throws IOException {
+          ProductDTO updateProduct =   productService.updateProductImage(id, image);
+
+          return new ResponseEntity<>(updateProduct, HttpStatus.OK);
+    }
 }

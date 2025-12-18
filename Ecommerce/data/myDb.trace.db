@@ -674,3 +674,6 @@ Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection wa
 2025-12-10 16:48:20.754500+05:30 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]CATEGORY"; expected "COMMIT, CREATE, CALL, CHECKPOINT, COMMENT"; SQL statement:
 CATEGORY [42001-232]
+2025-12-15 15:39:40.153393+05:30 jdbc[23]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]DELET FROM PRODUCT"; expected "DELETE, DROP"; SQL statement:
+DELET FROM PRODUCT [42001-232]
