@@ -1,10 +1,12 @@
 package com.ecommerce.Ecommerce.Controller;
 
+import com.ecommerce.Ecommerce.Config.AppConstants;
 import com.ecommerce.Ecommerce.Models.Product;
 import com.ecommerce.Ecommerce.Payload.ProductDTO;
 import com.ecommerce.Ecommerce.Payload.ProductResponse;
 import com.ecommerce.Ecommerce.Service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class ProductController {
 
     //@RequestBody -- used to bind the HTTP request body to java Object where you receive JSON OR XML data from a client
     @PostMapping("admin/categories/{categoryId}/product")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO, @PathVariable Long categoryId)
+    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO, @PathVariable Long categoryId)
     {
         ProductDTO savedProductDTO = productService.addProduct(productDTO, categoryId);
 
@@ -40,10 +42,15 @@ public class ProductController {
     }
 
     @GetMapping("/public/products")
-    public ResponseEntity<ProductResponse> getProducts(HttpServletRequest request){
+    public ResponseEntity<ProductResponse> getProducts(HttpServletRequest request,
+                                                       @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                       @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+                                                       @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCT_BY, required = false) String sortBy,
+                                                       @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder
+                                                       ){
 
         logger.info("Hello endpoint called");
-        ProductResponse productResponse = productService.getAllProducts(request);
+        ProductResponse productResponse = productService.getAllProducts(request, pageNumber, pageSize, sortBy, sortOrder);
 
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
@@ -86,7 +93,7 @@ public class ProductController {
     }
 
     @PutMapping("/admin/products/{id}")
-    public ResponseEntity<ProductDTO>  updateProductById(@RequestBody ProductDTO productDTO, @PathVariable Long id)
+    public ResponseEntity<ProductDTO>  updateProductById(@Valid @RequestBody ProductDTO productDTO, @PathVariable Long id)
     {
         ProductDTO updatedProductDTO = productService.updateProduct(productDTO, id);
 

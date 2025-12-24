@@ -1,5 +1,6 @@
 package com.ecommerce.Ecommerce.Service;
 
+import com.ecommerce.Ecommerce.Exception.APIException;
 import com.ecommerce.Ecommerce.Exception.ResourceNotFoundException;
 import com.ecommerce.Ecommerce.Models.Category;
 import com.ecommerce.Ecommerce.Models.Product;
@@ -11,16 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.ecommerce.Ecommerce.Service.FileService;
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -43,11 +42,21 @@ public class ProductService {
     }
 
 
-    public ProductResponse getAllProducts(HttpServletRequest request) {
+    public ProductResponse getAllProducts(HttpServletRequest request,Integer pageNumber, Integer pageSize, String sortBy,String sortOrder) {
 
         System.out.println("username is : " + request.getAttribute("username"));
 
-        List<Product> products =  productRepo.findAll();
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        System.out.println("page details" +pageDetails);
+        Page<Product> productPage =  productRepo.findAll(pageDetails);
+        List<Product> products = productPage.getContent();
+
+        if(products.isEmpty())
+            throw new APIException("No Product exists!");
 
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
@@ -55,16 +64,14 @@ public class ProductService {
 
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDTOS);
+        productResponse.setPageNumber(productPage.getNumber());
+        productResponse.setPageSize(productPage.getSize());
+        productResponse.setTotalPage(productPage.getTotalPages());
+        productResponse.setTotalElements(productPage.getTotalElements());
+        productResponse.setLastPage(productPage.isLast());
 
         return productResponse;
-
     }
-
-    /**
-     * when you call findById(id) -- it returns an Optional<Product> object.
-     * Optional is wrapper that may or may not contains a value.
-     * get() is used to retrieve the value from the optional.
-     */
 
     public Product getProductById(Long id) {
         return productRepo.findById(id).get();
@@ -91,21 +98,38 @@ public class ProductService {
         Category category = categoryRepo.findById(categoryId)
                             .orElseThrow(() -> new ResourceNotFoundException("Category not found", "CategoryId", categoryId));
 
-        Product product = modelMapper.map(productDTO, Product.class);
+        boolean isProductNotPresent = true;
+        List<Product> products = category.getProducts();
 
-        Optional<Product> product1 = productRepo.findByName(product.getName());
-
-        if(product1.isPresent()){
-            throw new RuntimeException("Product already exists!");
+        for (Product value : products) {
+            if (value.getName().equals(productDTO.getName())) {
+                isProductNotPresent = false;
+                break;
+            }
         }
-        product.setCategory(category);
-        product.setImageUrl("default.png");
-        double specialPrice = product.getPrice() - ((product.getDiscount()*0.01)*product.getPrice());
-        product.setSpecialPrice(specialPrice);
 
-        Product savedProduct = productRepo.save(product);
+        Product product = modelMapper.map(productDTO, Product.class);
+//        Optional<Product> product1 = productRepo.findByName(product.getName());
+//
+//        if(product1.isPresent()){
+//            throw new RuntimeException("Product already exists!");
+//        }
 
-        return modelMapper.map(savedProduct, ProductDTO.class);
+        if(isProductNotPresent)
+        {
+            product.setCategory(category);
+            product.setImageUrl("default.png");
+            double specialPrice = product.getPrice() - ((product.getDiscount()*0.01)*product.getPrice());
+            product.setSpecialPrice(specialPrice);
+
+            Product savedProduct = productRepo.save(product);
+
+            return modelMapper.map(savedProduct, ProductDTO.class);
+        }
+        else {
+            throw new APIException("Product already exists");
+        }
+
     }
 
 

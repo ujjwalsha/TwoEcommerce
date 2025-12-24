@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity   //it means it is identified this is mapped to table
@@ -28,5 +29,5 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Product> products;
+    private List<Product> products;
 }

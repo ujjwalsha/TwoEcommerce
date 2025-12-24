@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.core.util.Json;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,9 +24,19 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(min = 5, message = "Product Name must contain at least 5 characters")
     private String name;
+
+    @NotBlank
+    @Size(min = 5, message = "description must be contains at least 5 characters")
     private String description;
+
+    @NotBlank
+    @Size(min = 2, message = "brand name must be contains at least 5 characters")
     private String brand;
+
     private double price;
     private double discount;
     private boolean productAvailable;
@@ -46,14 +58,5 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
-    /**
-     * JsonIgnore is an annotation from jackson(a popular json library in java).
-     * it is used to tell jackson not to include a particular field or method when serializing or deserializing JSON
-     * Security reason -- Hide sensitive data like password, tokens, API keys.
-     * Avoid recursion.
-     * Clean response -- Remove unnecessary fields from API response.
-     * JSON serialization means converting  a java object into JSON. using ObjectMapper
-     * JSON deserialization means converting JSON back to a java Object.using ObjectMapper
-     */
     private Category category;
 }

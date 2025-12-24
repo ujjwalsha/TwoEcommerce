@@ -37,8 +37,8 @@ public class CategoryService {
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
-
         Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+
         Page<Category> categoryPage = categoryRepo.findAll(pageDetails);
 
         List<Category> categories = categoryPage.getContent();
@@ -70,7 +70,7 @@ public class CategoryService {
 
         if(categoryFromDb.isPresent())
         {
-            throw new ApiException("Not exists");
+            throw new ApiException("already exists");
         }
 
         Category savedCategory = categoryRepo.save(category);
