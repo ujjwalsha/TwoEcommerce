@@ -19,14 +19,6 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne
-//    private User user;
-//
-//    private List<CartItem> cartItems;
-//    private Long totalQuantity;
-//    private Long totalPrice;
-//    private String status;
-//    private LocalDateTime createdAt;
 
 
 }

@@ -5,7 +5,6 @@ import com.ecommerce.Ecommerce.Models.User;
 import com.ecommerce.Ecommerce.Models.UserRequest;
 import com.ecommerce.Ecommerce.Repository.UserRepo;
 import com.ecommerce.Ecommerce.Utility.JwtService;
-import com.ecommerce.Ecommerce.Utility.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -33,48 +32,48 @@ public class UserService {
 
         System.out.println(user);
 
-        if(userRepo.existsByEmail(user.getEmail())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "Users already exists!"));
-        }
-
-        if(user.getUsername() == null || user.getUsername().trim().isEmpty())
-        {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Username is required");
-        }
-
-        if(user.getPhone() == null || user.getPhone().trim().isEmpty() || user.getPhone().length() < 10)
-        {
-            System.out.println("length is : "+ user.getPhone());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("phone number must be length 10");
-        }
-
-        if(user.getEmail() == null || !user.getEmail().contains("@"))
-        {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid email");
-        }
-
-        //(?=.*[A-Z])  -- somewhere ahead in the string, there must be at least one uppercase character
-
-
-        String PASSWORD_PATTERN =
-                "^(?=.*[0-9])" + "(?=.*[a-z])" + "(?=.*[A-Z])" + "(?=.*[@#$%^&+=!-])" + ".{8,}$";
-
-        if(user.getPassword() == null || !user.getPassword().matches(PASSWORD_PATTERN))
-        {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message","Password must be at least 8 characters long and include uppercase, lowercase, number and special character"));
-        }
-
-
-        User temp = new User();
-        temp.setUsername(user.getUsername());
-        temp.setEmail(user.getEmail());
-
-        temp.setPassword(user.getPassword());
-        temp.setIsActive(user.getIsActive());
-        temp.setPhone(user.getPhone());
-        temp.setRole(user.getRole() != null ? user.getRole() : Role.USER);  //default user
-
-        userRepo.save(temp);
+//        if(userRepo.existsByEmail(user.getEmail())){
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "Users already exists!"));
+//        }
+//
+//        if(user.getUsername() == null || user.getUsername().trim().isEmpty())
+//        {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Username is required");
+//        }
+//
+//        if(user.getPhone() == null || user.getPhone().trim().isEmpty() || user.getPhone().length() < 10)
+//        {
+//            System.out.println("length is : "+ user.getPhone());
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("phone number must be length 10");
+//        }
+//
+//        if(user.getEmail() == null || !user.getEmail().contains("@"))
+//        {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid email");
+//        }
+//
+//        //(?=.*[A-Z])  -- somewhere ahead in the string, there must be at least one uppercase character
+//
+//
+//        String PASSWORD_PATTERN =
+//                "^(?=.*[0-9])" + "(?=.*[a-z])" + "(?=.*[A-Z])" + "(?=.*[@#$%^&+=!-])" + ".{8,}$";
+//
+//        if(user.getPassword() == null || !user.getPassword().matches(PASSWORD_PATTERN))
+//        {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message","Password must be at least 8 characters long and include uppercase, lowercase, number and special character"));
+//        }
+//
+//
+//        User temp = new User();
+//        temp.setUsername(user.getUsername());
+//        temp.setEmail(user.getEmail());
+//
+//        temp.setPassword(user.getPassword());
+//        temp.setIsActive(user.getIsActive());
+//        temp.setPhone(user.getPhone());
+//        temp.setRole(user.getRole() != null ? user.getRole() : Role.USER);  //default user
+//
+//        userRepo.save(temp);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Register successfully!");
     }
@@ -129,7 +128,6 @@ public class UserService {
         User temp = new User();
         temp.setUsername(user.getUsername());
         temp.setEmail(user.getEmail());
-        temp.setPhone(user.getPhone());
 
         userRepo.save(temp);
 

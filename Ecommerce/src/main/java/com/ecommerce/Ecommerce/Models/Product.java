@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,6 +20,8 @@ import java.util.Date;
 @Data //this is part of lombok library it will all constructor
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "products")
+@ToString
 public class Product {
 
     @Id
@@ -49,14 +52,16 @@ public class Product {
     @JsonIgnore
     private Date createdAt;
 
-
     @UpdateTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy, HH:MM:SS")
     private Date updatedAt;
-
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User user;
 }

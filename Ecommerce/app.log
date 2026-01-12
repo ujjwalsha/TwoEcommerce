@@ -1,40 +1,10 @@
-2025-12-20T00:42:27.867+05:30  INFO 6128 --- [Ecommerce] [main] c.e.Ecommerce.EcommerceApplication       : Starting EcommerceApplication using Java 24.0.1 with PID 6128 (C:\Users\2825794\Documents\Ecommerce\Ecommerce\target\classes started by 2825794 in C:\Users\2825794\Documents\Ecommerce\Ecommerce)
-2025-12-20T00:42:27.877+05:30  INFO 6128 --- [Ecommerce] [main] c.e.Ecommerce.EcommerceApplication       : No active profile set, falling back to 1 default profile: "default"
-2025-12-20T00:42:29.274+05:30  INFO 6128 --- [Ecommerce] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-12-20T00:42:29.391+05:30  INFO 6128 --- [Ecommerce] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 100 ms. Found 6 JPA repository interfaces.
-2025-12-20T00:42:30.203+05:30  INFO 6128 --- [Ecommerce] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2025-12-20T00:42:30.226+05:30  INFO 6128 --- [Ecommerce] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-12-20T00:42:30.227+05:30  INFO 6128 --- [Ecommerce] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
-2025-12-20T00:42:30.410+05:30  INFO 6128 --- [Ecommerce] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-12-20T00:42:30.411+05:30  INFO 6128 --- [Ecommerce] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2480 ms
-2025-12-20T00:42:30.907+05:30  INFO 6128 --- [Ecommerce] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-12-20T00:42:31.067+05:30  INFO 6128 --- [Ecommerce] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
-2025-12-20T00:42:31.169+05:30  INFO 6128 --- [Ecommerce] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-12-20T00:42:31.932+05:30  INFO 6128 --- [Ecommerce] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-12-20T00:42:32.010+05:30  INFO 6128 --- [Ecommerce] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-12-20T00:42:32.474+05:30  INFO 6128 --- [Ecommerce] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/myDb user=SA
-2025-12-20T00:42:32.477+05:30  INFO 6128 --- [Ecommerce] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-12-20T00:42:32.524+05:30  WARN 6128 --- [Ecommerce] [main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-12-20T00:42:32.577+05:30  INFO 6128 --- [Ecommerce] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-	Database driver: undefined/unknown
-	Database version: 2.3.232
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2025-12-20T00:42:34.463+05:30  INFO 6128 --- [Ecommerce] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-12-20T00:42:34.562+05:30  INFO 6128 --- [Ecommerce] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-12-20T00:42:35.821+05:30  WARN 6128 --- [Ecommerce] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-12-20T00:42:36.890+05:30  INFO 6128 --- [Ecommerce] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/myDb'
-2025-12-20T00:42:36.935+05:30  INFO 6128 --- [Ecommerce] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
-2025-12-20T00:42:37.123+05:30  INFO 6128 --- [Ecommerce] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2025-12-20T00:42:37.149+05:30  INFO 6128 --- [Ecommerce] [main] c.e.Ecommerce.EcommerceApplication       : Started EcommerceApplication in 9.923 seconds (process running for 10.649)
-2025-12-20T00:43:08.170+05:30  INFO 6128 --- [Ecommerce] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-12-20T00:43:08.171+05:30  INFO 6128 --- [Ecommerce] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-12-20T00:43:08.173+05:30  INFO 6128 --- [Ecommerce] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2025-12-20T02:00:13.950+05:30  INFO 6128 --- [Ecommerce] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2025-12-20T02:00:13.963+05:30  INFO 6128 --- [Ecommerce] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2025-12-20T02:00:13.973+05:30  INFO 6128 --- [Ecommerce] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-12-20T02:00:13.983+05:30  INFO 6128 --- [Ecommerce] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2025-12-20T02:00:13.986+05:30  INFO 6128 --- [Ecommerce] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-01T00:18:39.691+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=27m5s664ms586µs300ns).
+2026-01-01T00:38:09.580+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=19m29s888ms834µs400ns).
+2026-01-01T01:02:05.705+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m25s762ms149µs400ns).
+2026-01-01T08:18:22.971+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7h9m47s160ms613µs200ns).
+2026-01-01T09:52:17.832+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h33m58s745ms531µs300ns).
+2026-01-01T10:54:13.638+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m26s304ms125µs500ns).
+2026-01-01T10:55:16.601+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m2s965ms756µs).
+2026-01-01T11:00:00.691+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m44s60ms69µs400ns).
+2026-01-01T11:04:23.403+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m22s679ms422µs600ns).
+2026-01-01T11:29:25.830+05:30  WARN 27692 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m32s147ms977µs800ns).
