@@ -1,7 +1,6 @@
 package com.ecommerce.Ecommerce.Models;
 
 
-import com.ecommerce.Ecommerce.Utility.RoleName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -17,6 +16,7 @@ import java.util.*;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name ="users", uniqueConstraints ={
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
@@ -52,6 +52,13 @@ public class User {
     @JsonIgnore
     private Date updatedAt;
 
+    public User(String username, String email, String password)
+    {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     @Getter
     @Setter
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
@@ -77,5 +84,4 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<Address> addresses = new ArrayList<>();
-
 }

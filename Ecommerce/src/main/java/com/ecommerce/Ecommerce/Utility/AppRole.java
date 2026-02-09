@@ -1,9 +1,7 @@
 package com.ecommerce.Ecommerce.Utility;
 
-import jakarta.persistence.Enumerated;
 
-
-public enum RoleName {
+public enum AppRole {
     USER,
     SELLER,
     ADMIN

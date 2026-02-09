@@ -4,13 +4,11 @@ package com.ecommerce.Ecommerce.Service;
 import com.ecommerce.Ecommerce.Models.User;
 import com.ecommerce.Ecommerce.Models.UserRequest;
 import com.ecommerce.Ecommerce.Repository.UserRepo;
-import com.ecommerce.Ecommerce.Utility.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,13 +16,12 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepo userRepo;
-    private final JwtService jwtService;
+//    private final JwtService jwtService;
 
     @Autowired
-    public UserService(UserRepo userRepo, JwtService jwtService)
+    public UserService(UserRepo userRepo)
     {
         this.userRepo = userRepo;
-        this.jwtService = jwtService;
     }
 
 
@@ -100,20 +97,20 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
 
-        String token = jwtService.generateToken(existUser);
+//        String token = jwtService.generateToken(existUser);
 
 
-        System.out.println("token is : "+ token);
+//        System.out.println("token is : "+ token);
 
         //send jwt to cookies
-        ResponseCookie cookie = ResponseCookie.from("jwt",token)
+        ResponseCookie cookie = ResponseCookie.from("jwt")
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
                 .maxAge(24*60*60)
                 .build();
 
-        String username = jwtService.extractUsername(token);
+//        String username = jwtService.extractUsername(token);
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(Map.of("message" , "Login successful"));
     }

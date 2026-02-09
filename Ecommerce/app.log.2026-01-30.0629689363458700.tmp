@@ -1,0 +1,10 @@
+2026-01-30T05:46:33.381+05:30  WARN 22016 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6h27m47s335ms642µs800ns).
+2026-01-30T10:01:38.919+05:30  WARN 22016 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4h15m9s496ms595µs500ns).
+2026-01-30T10:49:28.662+05:30  WARN 22016 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m20s467ms441µs900ns).
+2026-01-30T11:34:21.638+05:30  WARN 22016 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=26m22s701ms989µs500ns).
+2026-01-30T11:57:46.079+05:30  WARN 22016 --- [Ecommerce] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m54s367ms45µs).
+2026-01-30T12:30:27.267+05:30  INFO 22016 --- [Ecommerce] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-30T12:30:27.329+05:30  INFO 22016 --- [Ecommerce] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-01-30T12:30:27.376+05:30  INFO 22016 --- [Ecommerce] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30T12:30:27.415+05:30  INFO 22016 --- [Ecommerce] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-30T12:30:27.429+05:30  INFO 22016 --- [Ecommerce] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
