@@ -24,13 +24,13 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private final ProductRepo productRepo;
-    private final CategoryRepo categoryRepo;
-    private final ModelMapper modelMapper;
-    private final FileService fileService;
+    public final ProductRepo productRepo;
+    public final CategoryRepo categoryRepo;
+    public final ModelMapper modelMapper;
+    public final FileService fileService;
 
     @Value("${project.image}")
-    private String path;
+    public String path;
 
     @Autowired
     public ProductService(ProductRepo productRepo, CategoryRepo categoryRepo, ModelMapper modelMapper, FileService fileService)
