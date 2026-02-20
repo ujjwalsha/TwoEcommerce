@@ -49,6 +49,7 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder()
     {
+        System.out.println("returing obj"+ new BCryptPasswordEncoder());
         System.out.println("Hello");
         return new BCryptPasswordEncoder();
     }
